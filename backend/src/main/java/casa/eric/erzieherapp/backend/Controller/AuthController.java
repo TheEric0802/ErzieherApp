@@ -1,4 +1,4 @@
-package casa.eric.erzieherapp.backend.security;
+package casa.eric.erzieherapp.backend.Controller;
 
 import casa.eric.erzieherapp.backend.model.AppUserDTO;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
