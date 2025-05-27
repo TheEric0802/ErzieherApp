@@ -28,6 +28,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: push-to-docker-hub
     steps:
-      - name: Trigger Render Deployment
+      - name: Trigger Redeployment
         run: |
           curl -X POST ${{ secrets.REDEPLOY_HOOK }}
