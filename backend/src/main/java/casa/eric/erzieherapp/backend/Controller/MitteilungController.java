@@ -1,6 +1,7 @@
 package casa.eric.erzieherapp.backend.Controller;
 
 import casa.eric.erzieherapp.backend.model.Mitteilung;
+import casa.eric.erzieherapp.backend.model.MitteilungDTO;
 import casa.eric.erzieherapp.backend.service.MitteilungService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,5 +18,15 @@ public class MitteilungController {
     @GetMapping
     public List<Mitteilung> getAllMitteilungen() {
         return mitteilungService.getAllMitteilungen();
+    }
+
+    @PostMapping
+    public Mitteilung createMitteilung(@RequestBody MitteilungDTO mitteilung) {
+        return mitteilungService.createMitteilung(mitteilung);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMitteilung(@PathVariable String id) {
+        mitteilungService.deleteMitteilung(id);
     }
 }
