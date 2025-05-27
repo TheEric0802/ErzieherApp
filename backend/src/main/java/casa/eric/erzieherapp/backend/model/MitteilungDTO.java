@@ -1,7 +1,6 @@
 package casa.eric.erzieherapp.backend.model;
 
-public record Mitteilung(
-        String id,
+public record MitteilungDTO(
         String title,
         String content
 ) {

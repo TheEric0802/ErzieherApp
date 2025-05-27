@@ -1,25 +1,40 @@
 package casa.eric.erzieherapp.backend.service;
 
 import casa.eric.erzieherapp.backend.model.Mitteilung;
+import casa.eric.erzieherapp.backend.model.MitteilungDTO;
 import casa.eric.erzieherapp.backend.repository.MitteilungRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class MitteilungServiceTest {
 
     private final MitteilungRepository mitteilungRepository = mock(MitteilungRepository.class);
-    private final MitteilungService mitteilungService = new MitteilungService(mitteilungRepository);
+    private final IdService idService = mock(IdService.class);
+    private final MitteilungService mitteilungService = new MitteilungService(mitteilungRepository, idService);
 
     @Test
     void getAllMitteilungen_ShouldReturnListOfMitteilungen() {
-        List<Mitteilung> mitteilungen = List.of(new Mitteilung("Titel1", "Content1"),new Mitteilung("Titel2", "Content2"));
+        List<Mitteilung> mitteilungen = List.of(new Mitteilung("ID1","Titel1", "Content1"),new Mitteilung("ID2","Titel2", "Content2"));
         when(mitteilungRepository.findAll()).thenReturn(mitteilungen);
         List<Mitteilung> result = mitteilungService.getAllMitteilungen();
         assertEquals(mitteilungen, result);
+    }
+
+    @Test
+    void createMitteilung_ShouldCreateMitteilung() {
+        Mitteilung mitteilung = new Mitteilung("CreateID", "TitelCreate", "ContentCreate");
+        when(idService.generateId()).thenReturn("CreateID");
+        mitteilungService.createMitteilung(new MitteilungDTO("TitelCreate", "ContentCreate"));
+        verify(mitteilungRepository, times(1)).save(mitteilung);
+    }
+
+    @Test
+    void deleteMitteilung_ShouldDeleteMitteilung() {
+        mitteilungService.deleteMitteilung("DeleteID");
+        verify(mitteilungRepository, times(1)).deleteById("DeleteID");
     }
 }
