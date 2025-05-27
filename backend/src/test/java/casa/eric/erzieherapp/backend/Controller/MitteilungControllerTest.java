@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -21,6 +22,7 @@ class MitteilungControllerTest {
     MitteilungRepository mitteilungRepository;
 
     @Test
+    @WithMockUser
     void getAllMitteilungen_ShouldReturnListOfMitteilungen() throws Exception {
         mitteilungRepository.save(new Mitteilung("1","Titel1", "Content1"));
         mockMvc.perform(get("/api/mitteilung")).andExpect(status().isOk())
@@ -30,6 +32,7 @@ class MitteilungControllerTest {
     }
 
     @Test
+    @WithMockUser
     void createMitteilung_ShouldCreateMitteilung() throws Exception {
         mockMvc.perform(post("/api/mitteilung")
                 .contentType("application/json")
@@ -44,7 +47,8 @@ class MitteilungControllerTest {
     }
 
     @Test
-    void deleteMitteilung() throws Exception {
+    @WithMockUser
+    void deleteMitteilung_ShouldReturnOk() throws Exception {
         mitteilungRepository.save(new Mitteilung("DELETE","TitelDELETE", "ContentDELETE"));
         mockMvc.perform(delete("/api/mitteilung/DELETE")).andExpect(status().isOk());
     }
