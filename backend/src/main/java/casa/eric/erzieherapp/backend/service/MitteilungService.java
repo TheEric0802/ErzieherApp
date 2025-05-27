@@ -13,13 +13,14 @@ import java.util.List;
 public class MitteilungService {
 
     private final MitteilungRepository mitteilungRepository;
+    private final IdService idService;
 
     public List<Mitteilung> getAllMitteilungen() {
         return mitteilungRepository.findAll();
     }
 
     public Mitteilung createMitteilung(MitteilungDTO mitteilung) {
-        return mitteilungRepository.save(new Mitteilung(mitteilung.title(), mitteilung.content()));
+        return mitteilungRepository.save(new Mitteilung(idService.generateId() ,mitteilung.title(), mitteilung.content()));
     }
 
     public void deleteMitteilung(String id) {

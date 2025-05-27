@@ -8,9 +8,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -28,5 +27,25 @@ class MitteilungControllerTest {
                 .andExpect(content().json("""
                     [{"id": "1","title": "Titel1", "content": "Content1"}]
                 """));
+    }
+
+    @Test
+    void createMitteilung_ShouldCreateMitteilung() throws Exception {
+        mockMvc.perform(post("/api/mitteilung")
+                .contentType("application/json")
+                .content("""
+                    {"title": "TitelCreate", "content": "ContentCreate"}
+                """))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {"title": "TitelCreate", "content": "ContentCreate"}
+                """))
+                .andExpect(jsonPath("$.id").isNotEmpty());
+    }
+
+    @Test
+    void deleteMitteilung() throws Exception {
+        mitteilungRepository.save(new Mitteilung("DELETE","TitelDELETE", "ContentDELETE"));
+        mockMvc.perform(delete("/api/mitteilung/DELETE")).andExpect(status().isOk());
     }
 }
