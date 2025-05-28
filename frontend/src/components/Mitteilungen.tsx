@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { mitteilung } from "../types/mitteilung.ts";
 import axios from "axios";
 import * as React from "react";
+import { cardStyle, containerStyle } from "../App.tsx";
 
 type MitteilungenProps = {
   appUser: appUser | null | undefined;
@@ -57,12 +58,9 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
 
   return (
     <>
-      <div className={"container mx-auto px-4 flex flex-col-reverse"}>
+      <div className={"flex flex-col-reverse" + containerStyle}>
         {mitteilungen.map((mitteilung) => (
-          <div
-            className={"card card-border bg-base-100 w-full shadow-sm my-2"}
-            key={mitteilung.id}
-          >
+          <div className={cardStyle} key={mitteilung.id}>
             <div className={"card-body"}>
               <div className={"card-title"}>
                 <h2>{mitteilung.title}</h2>
@@ -147,7 +145,7 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
           </div>
         ))}
         {appUser ? (
-          <div className={"card card-border bg-base-100 shadow-sm my-2"}>
+          <div className={cardStyle}>
             <div className={"card-body"}>
               <div className={"card-title"}>
                 <h2>Neue Mitteilung</h2>

@@ -1,10 +1,14 @@
 import type { appUser } from "../types/appUser.ts";
+import { useNavigate } from "react-router-dom";
+import { containerStyle } from "../App.tsx";
 
 type HeaderProps = {
   appUser: appUser | null | undefined;
 };
 
 export default function Header({ appUser }: HeaderProps) {
+  const nav = useNavigate();
+
   const host: string =
     window.location.host === "localhost:5173"
       ? "http://localhost:8080"
@@ -13,11 +17,24 @@ export default function Header({ appUser }: HeaderProps) {
   return (
     <>
       <div className={"navbar bg-base-100 shadow-sm"}>
-        <div className={"container mx-auto px-4 flex"}>
-          <div className={"flex-1"}>
+        <div className={"flex" + containerStyle}>
+          <div className={"navbar-start"}>
             <p className={"text-xl"}>ErzieherApp</p>
           </div>
-          <div className={"flex gap-2"}>
+          {appUser ? (
+            <div className={"join navbar-center"}>
+              <button className={"btn join-item"} onClick={() => nav("/")}>
+                Mitteilungen
+              </button>
+              <button
+                className={"btn join-item"}
+                onClick={() => nav("/gruppen")}
+              >
+                Gruppen
+              </button>
+            </div>
+          ) : null}
+          <div className={"flex gap-2 navbar-end"}>
             {appUser ? (
               <>
                 <div className={"dropdown dropdown-end"}>
@@ -27,6 +44,11 @@ export default function Header({ appUser }: HeaderProps) {
                       "menu dropdown-content bg-base-100 rounded-box shadow"
                     }
                   >
+                    <li>
+                      <button onClick={() => nav("/neueGruppe")}>
+                        Gruppe erstellen
+                      </button>
+                    </li>
                     <li>
                       <button
                         onClick={() => window.open(host + "/logout", "_self")}
