@@ -25,6 +25,11 @@ public class MitteilungController {
         return mitteilungService.createMitteilung(mitteilung);
     }
 
+    @PutMapping("/{id}")
+    public Mitteilung updateMitteilung(@PathVariable String id, @RequestBody MitteilungDTO mitteilung) {
+        return mitteilungService.updateMitteilung(id, mitteilung);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteMitteilung(@PathVariable String id) {
         mitteilungService.deleteMitteilung(id);
