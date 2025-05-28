@@ -32,6 +32,22 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
       .catch((e) => console.error(e));
   }
 
+  function updateMitteilung(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const formData: FormData = new FormData(e.currentTarget);
+    const dto = Object.fromEntries(formData);
+    if (!dto.title || !dto.content) return;
+    axios
+      .put<mitteilung>(`api/mitteilung/${dto.id}`, Object.fromEntries(formData))
+      .then(() => {
+        loadMitteilungen();
+        (
+          document.getElementById(`edit_modal_${dto.id}`)! as HTMLDialogElement
+        ).close();
+      })
+      .catch((e) => console.error(e));
+  }
+
   function deleteMitteilung(id: string) {
     axios
       .delete("api/mitteilung/" + id)
@@ -54,6 +70,68 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
               <p className={"whitespace-pre-wrap"}>{mitteilung.content}</p>
               {appUser ? (
                 <div className={"card-actions"}>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      (
+                        document.getElementById(
+                          `edit_form_${mitteilung.id}`,
+                        )! as HTMLFormElement
+                      ).reset();
+                      (
+                        document.getElementById(
+                          `edit_modal_${mitteilung.id}`,
+                        )! as HTMLDialogElement
+                      ).showModal();
+                    }}
+                  >
+                    Bearbeiten
+                  </button>
+                  <dialog id={`edit_modal_${mitteilung.id}`} className="modal">
+                    <div className="modal-box">
+                      <h3 className="font-bold text-lg">Hello!</h3>
+                      <p className="py-4">
+                        Press ESC key or click the button below to close
+                        edit_modal_{mitteilung.id}
+                      </p>
+                      <form
+                        onSubmit={updateMitteilung}
+                        id={`edit_form_${mitteilung.id}`}
+                      >
+                        <input
+                          name={"id"}
+                          value={mitteilung.id}
+                          type={"hidden"}
+                        />
+                        <label className="input w-full">
+                          <span className="label">Titel</span>
+                          <input
+                            type="text"
+                            placeholder="Hier tippen ..."
+                            name={"title"}
+                            defaultValue={mitteilung.title}
+                          />
+                        </label>
+                        <fieldset className="fieldset">
+                          <legend className="fieldset-legend">Inhalt</legend>
+                          <textarea
+                            className="textarea h-24 w-full"
+                            placeholder="Inhalt"
+                            name={"content"}
+                            defaultValue={mitteilung.content}
+                          />
+                        </fieldset>
+                        <div className="modal-action">
+                          <button className="btn btn-primary">Senden</button>
+                          <form method="dialog">
+                            <button className="btn btn-secondary">
+                              Abbrechen
+                            </button>
+                          </form>
+                        </div>
+                      </form>
+                    </div>
+                  </dialog>
                   <button
                     className={"btn btn-error"}
                     type={"button"}
