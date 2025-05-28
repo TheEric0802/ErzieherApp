@@ -48,6 +48,21 @@ class MitteilungControllerTest {
 
     @Test
     @WithMockUser
+    void updateMitteilung() throws Exception {
+        mitteilungRepository.save(new Mitteilung("UPDATE","TitelUPDATE", "ContentUPDATE"));
+        mockMvc.perform(put("/api/mitteilung/UPDATE")
+                .contentType("application/json")
+                .content("""
+                    {"title": "TitelUpdated", "content": "ContentUpdated"}
+                """))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {"id": "UPDATE", "title": "TitelUpdated", "content": "ContentUpdated"}
+                """));
+    }
+
+    @Test
+    @WithMockUser
     void deleteMitteilung_ShouldReturnOk() throws Exception {
         mitteilungRepository.save(new Mitteilung("DELETE","TitelDELETE", "ContentDELETE"));
         mockMvc.perform(delete("/api/mitteilung/DELETE")).andExpect(status().isOk());

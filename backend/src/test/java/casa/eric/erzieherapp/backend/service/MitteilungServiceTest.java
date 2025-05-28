@@ -33,6 +33,16 @@ class MitteilungServiceTest {
     }
 
     @Test
+    void updateMitteilung_ShouldUpdateMitteilung() {
+        Mitteilung mitteilung = new Mitteilung("UpdateID", "TitelUpdate", "ContentUpdate");
+        when(mitteilungRepository.findById("UpdateID")).thenReturn(java.util.Optional.of(mitteilung));
+        MitteilungDTO mitteilungDTO = new MitteilungDTO("TitelUpdated", "ContentUpdated");
+        mitteilungService.updateMitteilung("UpdateID", mitteilungDTO);
+        Mitteilung mitteilungUpdated = mitteilung.withTitle(mitteilungDTO.title()).withContent(mitteilungDTO.content());
+        verify(mitteilungRepository, times(1)).save(mitteilungUpdated);
+    }
+
+    @Test
     void deleteMitteilung_ShouldDeleteMitteilung() {
         mitteilungService.deleteMitteilung("DeleteID");
         verify(mitteilungRepository, times(1)).deleteById("DeleteID");
