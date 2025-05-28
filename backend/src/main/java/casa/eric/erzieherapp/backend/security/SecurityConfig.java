@@ -23,8 +23,12 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/mitteilung").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/mitteilung/*").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/gruppe").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/gruppe/*").permitAll()
                 .requestMatchers("/api/mitteilung").authenticated()
                 .requestMatchers("/api/mitteilung/*").authenticated()
+                .requestMatchers("/api/gruppe").authenticated()
+                .requestMatchers("/api/gruppe/*").authenticated()
                 .anyRequest().permitAll())
                 .logout(logout -> logout.logoutSuccessUrl(appUrl))
                 .oauth2Login(oauth2 -> oauth2
