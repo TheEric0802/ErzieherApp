@@ -4,10 +4,7 @@ import casa.eric.erzieherapp.backend.model.Gruppe;
 import casa.eric.erzieherapp.backend.model.GruppeDTO;
 import casa.eric.erzieherapp.backend.service.GruppeService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,7 +21,7 @@ public class GruppeController {
     }
 
     @PostMapping
-    public Gruppe createGruppe(GruppeDTO gruppe) {
+    public Gruppe createGruppe(@RequestBody GruppeDTO gruppe) {
         return gruppeService.createGruppe(gruppe);
     }
 }
