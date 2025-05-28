@@ -5,6 +5,11 @@ import type { appUser } from "./types/appUser.ts";
 import Header from "./components/Header.tsx";
 import Mitteilungen from "./components/Mitteilungen.tsx";
 import { Route, Routes } from "react-router-dom";
+import Gruppen from "./components/Gruppen.tsx";
+import GruppeErstellen from "./components/GruppeErstellen.tsx";
+
+export const containerStyle = " container mx-auto px-4";
+export const cardStyle = " card card-border bg-base-100 shadow-sm my-2";
 
 function App() {
   const [appUser, setAppUser] = useState<appUser | null | undefined>(undefined);
@@ -31,6 +36,11 @@ function App() {
       <Header appUser={appUser} />
       <Routes>
         <Route path="/" element={<Mitteilungen appUser={appUser} />} />
+        <Route path="/gruppen" element={<Gruppen appUser={appUser} />} />
+        <Route
+          path="/neueGruppe"
+          element={<GruppeErstellen appUser={appUser} />}
+        />
       </Routes>
     </>
   );
