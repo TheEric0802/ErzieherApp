@@ -4,6 +4,7 @@ import axios from "axios";
 import type { appUser } from "./types/appUser.ts";
 import Header from "./components/Header.tsx";
 import Mitteilungen from "./components/Mitteilungen.tsx";
+import { Route, Routes } from "react-router-dom";
 
 function App() {
   const [appUser, setAppUser] = useState<appUser | null | undefined>(undefined);
@@ -28,7 +29,9 @@ function App() {
   return (
     <>
       <Header appUser={appUser} />
-      <Mitteilungen appUser={appUser} />
+      <Routes>
+        <Route path="/" element={<Mitteilungen appUser={appUser} />} />
+      </Routes>
     </>
   );
 }
