@@ -21,8 +21,10 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/api/auth").authenticated()
-                .requestMatchers(HttpMethod.POST, "/api/mitteilung").authenticated()
-                .requestMatchers(HttpMethod.DELETE,"/api/mitteilung/*").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/mitteilung").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/mitteilung/*").permitAll()
+                .requestMatchers("/api/mitteilung").authenticated()
+                .requestMatchers("/api/mitteilung/*").authenticated()
                 .anyRequest().permitAll())
                 .logout(logout -> logout.logoutSuccessUrl(appUrl))
                 .oauth2Login(oauth2 -> oauth2
