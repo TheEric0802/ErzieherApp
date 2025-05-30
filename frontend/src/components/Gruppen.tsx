@@ -27,6 +27,13 @@ export default function Gruppen({ appUser }: GruppenProps) {
     loadGruppen();
   }, [loadGruppen]);
 
+  function deleteGruppe(id: string) {
+    axios
+      .delete<gruppe>(`api/gruppe/${id}`)
+      .then(() => loadGruppen())
+      .catch((e) => console.error(e));
+  }
+
   return (
     <>
       <h1 className={titleStyle}>Gruppen</h1>
@@ -34,8 +41,14 @@ export default function Gruppen({ appUser }: GruppenProps) {
         {gruppen.map((g) => (
           <div className={cardStyle} key={g.id}>
             <div className={"card-body"}>
-              <div className={"card-title"}>
-                <h2>{g.name}</h2>
+              <h2 className={"card-title"}>{g.name}</h2>
+              <div className={"card-actions"}>
+                <button
+                  className={"btn btn-error"}
+                  onClick={() => deleteGruppe(g.id)}
+                >
+                  Löschen
+                </button>
               </div>
             </div>
           </div>
