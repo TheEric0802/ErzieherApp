@@ -31,4 +31,10 @@ class GruppeServiceTest {
         gruppeService.createGruppe(new GruppeDTO("Gruppe1"));
         verify(gruppeRepository, times(1)).save(gruppe);
     }
+
+    @Test
+    void deleteGruppe_shouldDeleteGruppe() {
+        gruppeService.deleteGruppe("ID1");
+        verify(gruppeRepository, times(1)).deleteById("ID1");
+    }
 }

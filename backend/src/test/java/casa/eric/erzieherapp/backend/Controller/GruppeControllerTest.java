@@ -10,8 +10,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -45,5 +44,12 @@ class GruppeControllerTest {
                     {"name": "Gruppe1"}
                 """))
                 .andExpect(jsonPath("$.id").isNotEmpty());
+    }
+
+    @Test
+    @WithMockUser
+    void deleteGruppe() throws Exception {
+        gruppeRepository.save(new Gruppe("ID2", "Gruppe2"));
+        mockMvc.perform(delete("/api/gruppe/ID2")).andExpect(status().isOk());
     }
 }
