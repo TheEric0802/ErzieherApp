@@ -22,4 +22,14 @@ public class GruppeService {
     public Gruppe createGruppe(GruppeDTO gruppe) {
         return gruppeRepository.save(new Gruppe(idService.generateId(), gruppe.name()));
     }
+
+    public Gruppe updateGruppe(String id, GruppeDTO gruppe) {
+        Gruppe updatedGruppe = gruppeRepository.findById(id).get()
+                .withName(gruppe.name());
+        return gruppeRepository.save(updatedGruppe);
+    }
+
+    public void deleteGruppe(String id) {
+        gruppeRepository.deleteById(id);
+    }
 }
