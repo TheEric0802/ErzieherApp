@@ -54,7 +54,7 @@ export default function Gruppen({ appUser }: GruppenProps) {
   return (
     <>
       <h1 className={titleStyle}>Gruppen</h1>
-      <div className={"flex flex-col"}>
+      <div className={"flex flex-row flex-wrap gap-4"}>
         {gruppen.map((g) => (
           <div className={cardStyle} key={g.id}>
             <div className={"card-body"}>

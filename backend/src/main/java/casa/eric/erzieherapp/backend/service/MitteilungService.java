@@ -20,7 +20,7 @@ public class MitteilungService {
     }
 
     public Mitteilung createMitteilung(MitteilungDTO mitteilung) {
-        return mitteilungRepository.save(new Mitteilung(idService.generateId() ,mitteilung.title(), mitteilung.content()));
+        return mitteilungRepository.save(new Mitteilung(idService.generateId() ,mitteilung.title(), mitteilung.content(), mitteilung.gruppenIds()));
     }
 
     public Mitteilung updateMitteilung(String id, MitteilungDTO mitteilung) {

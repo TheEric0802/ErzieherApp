@@ -4,6 +4,7 @@ import type { mitteilung } from "../types/mitteilung.ts";
 import axios from "axios";
 import * as React from "react";
 import { cardStyle, titleStyle } from "../App.tsx";
+import type { gruppe } from "../types/gruppe.ts";
 
 type MitteilungenProps = {
   appUser: appUser | null | undefined;
@@ -11,6 +12,7 @@ type MitteilungenProps = {
 
 export default function Mitteilungen({ appUser }: MitteilungenProps) {
   const [mitteilungen, setMitteilungen] = useState<mitteilung[]>([]);
+  const [gruppen, setGruppen] = useState<gruppe[]>([]);
 
   const loadMitteilungen = useCallback(() => {
     axios
@@ -18,17 +20,29 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
       .then((r) => setMitteilungen(r.data));
   }, []);
 
+  const loadGruppen = useCallback(() => {
+    axios
+      .get<gruppe[]>("api/gruppe")
+      .then((r) => setGruppen(r.data))
+      .catch((e) => console.error(e));
+  }, []);
+
   useEffect(() => {
     loadMitteilungen();
-  }, [loadMitteilungen]);
+    loadGruppen();
+  }, [loadMitteilungen, loadGruppen]);
 
   function createMitteilung(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData: FormData = new FormData(e.currentTarget);
-    const dto = Object.fromEntries(formData);
+    const dto = {
+      title: formData.get("title"),
+      content: formData.get("content"),
+      gruppenIds: formData.getAll("gruppenIds"),
+    };
     if (!dto.title || !dto.content) return;
     axios
-      .post<mitteilung>("api/mitteilung", Object.fromEntries(formData))
+      .post<mitteilung>("api/mitteilung", dto)
       .then(() => loadMitteilungen())
       .catch((e) => console.error(e));
   }
@@ -66,6 +80,18 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
               <div className={"card-title"}>
                 <h2>{mitteilung.title}</h2>
               </div>
+              {mitteilung.gruppenIds ? (
+                <div className={"flex flex-row flex-wrap gap-2"}>
+                  {mitteilung.gruppenIds.map((id) => (
+                    <div
+                      className={"badge badge-accent"}
+                      key={mitteilung.id + id}
+                    >
+                      {gruppen.find((g) => g.id === id)?.name}
+                    </div>
+                  ))}
+                </div>
+              ) : null}
               <p className={"whitespace-pre-wrap"}>{mitteilung.content}</p>
               {appUser ? (
                 <div className={"card-actions"}>
@@ -166,6 +192,20 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
                   placeholder="Inhalt"
                   name={"content"}
                 ></textarea>
+              </fieldset>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Gruppen</legend>
+                {gruppen.map((gruppe) => (
+                  <label className={"label"} key={gruppe.id}>
+                    <input
+                      type={"checkbox"}
+                      name={"gruppenIds"}
+                      className={"checkbox"}
+                      value={gruppe.id}
+                    />
+                    {gruppe.name}
+                  </label>
+                ))}
               </fieldset>
               <div className={"card-actions"}>
                 <button className="btn btn-primary">Senden</button>
