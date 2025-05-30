@@ -24,4 +24,9 @@ public class GruppeController {
     public Gruppe createGruppe(@RequestBody GruppeDTO gruppe) {
         return gruppeService.createGruppe(gruppe);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteGruppe(@PathVariable String id) {
+        gruppeService.deleteGruppe(id);
+    }
 }
