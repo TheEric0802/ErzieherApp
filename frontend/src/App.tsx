@@ -10,6 +10,7 @@ import GruppeErstellen from "./components/GruppeErstellen.tsx";
 
 export const containerStyle = " container mx-auto px-4";
 export const cardStyle = " card card-border bg-base-100 shadow-sm my-2";
+export const titleStyle = " text-3xl my-2 font-semibold";
 
 function App() {
   const [appUser, setAppUser] = useState<appUser | null | undefined>(undefined);
@@ -34,14 +35,16 @@ function App() {
   return (
     <>
       <Header appUser={appUser} />
-      <Routes>
-        <Route path="/" element={<Mitteilungen appUser={appUser} />} />
-        <Route path="/gruppen" element={<Gruppen appUser={appUser} />} />
-        <Route
-          path="/neueGruppe"
-          element={<GruppeErstellen appUser={appUser} />}
-        />
-      </Routes>
+      <div className={containerStyle}>
+        <Routes>
+          <Route path="/" element={<Mitteilungen appUser={appUser} />} />
+          <Route path="/gruppen" element={<Gruppen appUser={appUser} />} />
+          <Route
+            path="/neueGruppe"
+            element={<GruppeErstellen appUser={appUser} />}
+          />
+        </Routes>
+      </div>
     </>
   );
 }
