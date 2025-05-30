@@ -23,11 +23,14 @@ export default function Header({ appUser }: HeaderProps) {
           </div>
           {appUser ? (
             <div className={"join navbar-center"}>
-              <button className={"btn join-item"} onClick={() => nav("/")}>
+              <button
+                className={"btn btn-primary join-item"}
+                onClick={() => nav("/")}
+              >
                 Mitteilungen
               </button>
               <button
-                className={"btn join-item"}
+                className={"btn btn-primary join-item"}
                 onClick={() => nav("/gruppen")}
               >
                 Gruppen
@@ -38,7 +41,9 @@ export default function Header({ appUser }: HeaderProps) {
             {appUser ? (
               <>
                 <div className={"dropdown dropdown-end"}>
-                  <button className={"btn"}>{appUser.username}</button>
+                  <button className={"btn btn-primary"}>
+                    {appUser.username}
+                  </button>
                   <ul
                     className={
                       "menu dropdown-content bg-base-100 rounded-box shadow"
