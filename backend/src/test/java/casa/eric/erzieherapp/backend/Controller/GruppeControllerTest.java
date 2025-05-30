@@ -48,6 +48,20 @@ class GruppeControllerTest {
 
     @Test
     @WithMockUser
+    void updateGruppe() throws Exception {
+        gruppeRepository.save(new Gruppe("ID3", "Gruppe3"));
+        mockMvc.perform(put("/api/gruppe/ID3")
+                .contentType("application/json")
+                .content("""
+                    {"name": "GruppeUpdated"}
+                """)).andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {"id": "ID3", "name": "GruppeUpdated"}
+                """));
+    }
+
+    @Test
+    @WithMockUser
     void deleteGruppe() throws Exception {
         gruppeRepository.save(new Gruppe("ID2", "Gruppe2"));
         mockMvc.perform(delete("/api/gruppe/ID2")).andExpect(status().isOk());

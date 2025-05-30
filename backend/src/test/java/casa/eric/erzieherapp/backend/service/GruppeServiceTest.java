@@ -33,6 +33,15 @@ class GruppeServiceTest {
     }
 
     @Test
+    void updateGruppe_shouldUpdateGruppe() {
+        Gruppe gruppe = new Gruppe("ID2", "Gruppe2");
+        when(gruppeRepository.findById("ID2")).thenReturn(java.util.Optional.of(gruppe));
+        GruppeDTO gruppeDTO = new GruppeDTO("Gruppe2");
+        gruppeService.updateGruppe("ID2", gruppeDTO);
+        verify(gruppeRepository, times(1)).save(gruppe);
+    }
+
+    @Test
     void deleteGruppe_shouldDeleteGruppe() {
         gruppeService.deleteGruppe("ID1");
         verify(gruppeRepository, times(1)).deleteById("ID1");
