@@ -3,7 +3,7 @@ import axios from "axios";
 import type { gruppe } from "../types/gruppe.ts";
 import { useNavigate } from "react-router-dom";
 import type { appUser } from "../types/appUser.ts";
-import { cardStyle, containerStyle } from "../App.tsx";
+import { cardStyle, titleStyle } from "../App.tsx";
 
 type GruppenProps = {
   appUser: appUser | null | undefined;
@@ -28,15 +28,19 @@ export default function Gruppen({ appUser }: GruppenProps) {
   }, [loadGruppen]);
 
   return (
-    <div className={containerStyle}>
-      <h1 className={"text-3xl"}>Gruppen</h1>
-      <div className={"flex flex-col gap-2"}>
+    <>
+      <h1 className={titleStyle}>Gruppen</h1>
+      <div className={"flex flex-col"}>
         {gruppen.map((g) => (
           <div className={cardStyle} key={g.id}>
-            <p>{g.name}</p>
+            <div className={"card-body"}>
+              <div className={"card-title"}>
+                <h2>{g.name}</h2>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 }

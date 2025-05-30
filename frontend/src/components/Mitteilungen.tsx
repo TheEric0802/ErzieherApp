@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { mitteilung } from "../types/mitteilung.ts";
 import axios from "axios";
 import * as React from "react";
-import { cardStyle, containerStyle } from "../App.tsx";
+import { cardStyle, titleStyle } from "../App.tsx";
 
 type MitteilungenProps = {
   appUser: appUser | null | undefined;
@@ -58,7 +58,8 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
 
   return (
     <>
-      <div className={"flex flex-col-reverse" + containerStyle}>
+      <h1 className={titleStyle}>Mitteilungen</h1>
+      <div className={"flex flex-col-reverse"}>
         {mitteilungen.map((mitteilung) => (
           <div className={cardStyle} key={mitteilung.id}>
             <div className={"card-body"}>
@@ -146,30 +147,30 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
         ))}
         {appUser ? (
           <div className={cardStyle}>
-            <div className={"card-body"}>
+            <form onSubmit={createMitteilung} className={"card-body"}>
               <div className={"card-title"}>
                 <h2>Neue Mitteilung</h2>
               </div>
-              <form onSubmit={createMitteilung}>
-                <label className="input w-full">
-                  <span className="label">Titel</span>
-                  <input
-                    type="text"
-                    placeholder="Hier tippen ..."
-                    name={"title"}
-                  />
-                </label>
-                <fieldset className="fieldset">
-                  <legend className="fieldset-legend">Inhalt</legend>
-                  <textarea
-                    className="textarea h-24 w-full"
-                    placeholder="Inhalt"
-                    name={"content"}
-                  ></textarea>
-                </fieldset>
+              <label className="input w-full">
+                <span className="label">Titel</span>
+                <input
+                  type="text"
+                  placeholder="Hier tippen ..."
+                  name={"title"}
+                />
+              </label>
+              <fieldset className="fieldset">
+                <legend className="fieldset-legend">Inhalt</legend>
+                <textarea
+                  className="textarea h-24 w-full"
+                  placeholder="Inhalt"
+                  name={"content"}
+                ></textarea>
+              </fieldset>
+              <div className={"card-actions"}>
                 <button className="btn btn-primary">Senden</button>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         ) : (
           <></>
