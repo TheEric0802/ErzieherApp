@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -24,12 +25,15 @@ public class GruppeService {
     }
 
     public Gruppe updateGruppe(String id, GruppeDTO gruppe) {
-        Gruppe updatedGruppe = gruppeRepository.findById(id).get()
+        Gruppe updatedGruppe = gruppeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Gruppe not found"))
                 .withName(gruppe.name());
         return gruppeRepository.save(updatedGruppe);
     }
 
     public void deleteGruppe(String id) {
+        if (!gruppeRepository.existsById(id)) {
+            throw new NoSuchElementException("Gruppe not found");
+        }
         gruppeRepository.deleteById(id);
     }
 }

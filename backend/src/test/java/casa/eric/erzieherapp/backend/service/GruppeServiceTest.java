@@ -6,6 +6,7 @@ import casa.eric.erzieherapp.backend.repository.GruppeRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -43,7 +44,14 @@ class GruppeServiceTest {
 
     @Test
     void deleteGruppe_shouldDeleteGruppe() {
+        when(gruppeRepository.existsById("ID1")).thenReturn(true);
         gruppeService.deleteGruppe("ID1");
         verify(gruppeRepository, times(1)).deleteById("ID1");
+    }
+
+    @Test
+    void deleteGruppe_shouldThrowNoSuchElementException() {
+        when(gruppeRepository.existsById("ID3")).thenReturn(false);
+        assertThrows(NoSuchElementException.class, () -> gruppeService.deleteGruppe("ID3"));
     }
 }

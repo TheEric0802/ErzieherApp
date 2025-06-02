@@ -6,6 +6,7 @@ import casa.eric.erzieherapp.backend.repository.MitteilungRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -44,7 +45,14 @@ class MitteilungServiceTest {
 
     @Test
     void deleteMitteilung_ShouldDeleteMitteilung() {
+        when(mitteilungRepository.existsById("DeleteID")).thenReturn(true);
         mitteilungService.deleteMitteilung("DeleteID");
         verify(mitteilungRepository, times(1)).deleteById("DeleteID");
+    }
+
+    @Test
+    void deleteMitteilung_ShouldThrowException_WhenMitteilungDoesNotExist() {
+        when(mitteilungRepository.existsById("DeleteID2")).thenReturn(false);
+        assertThrows(NoSuchElementException.class, () -> mitteilungService.deleteMitteilung("DeleteID2"));
     }
 }

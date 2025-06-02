@@ -4,6 +4,7 @@ import casa.eric.erzieherapp.backend.model.Gruppe;
 import casa.eric.erzieherapp.backend.model.GruppeDTO;
 import casa.eric.erzieherapp.backend.service.GruppeService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class GruppeController {
         return gruppeService.getAllGruppen();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Gruppe createGruppe(@RequestBody GruppeDTO gruppe) {
         return gruppeService.createGruppe(gruppe);
@@ -30,6 +32,7 @@ public class GruppeController {
         return gruppeService.updateGruppe(id, gruppe);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteGruppe(@PathVariable String id) {
         gruppeService.deleteGruppe(id);
