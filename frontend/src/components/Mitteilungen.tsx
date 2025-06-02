@@ -13,11 +13,21 @@ type MitteilungenProps = {
 export default function Mitteilungen({ appUser }: MitteilungenProps) {
   const [mitteilungen, setMitteilungen] = useState<mitteilung[]>([]);
   const [gruppen, setGruppen] = useState<gruppe[]>([]);
+  const [filterGruppe, setFilterGruppe] = useState<string>("alle");
+  const filteredMitteilungen: mitteilung[] =
+    filterGruppe === "alle"
+      ? mitteilungen
+      : mitteilungen.filter((m: mitteilung) =>
+          m.gruppenIds ? m.gruppenIds.includes(filterGruppe) : false,
+        );
 
   const loadMitteilungen = useCallback(() => {
     axios
       .get<mitteilung[]>("api/mitteilung")
-      .then((r) => setMitteilungen(r.data));
+      .then((r) => {
+        setMitteilungen(r.data);
+      })
+      .catch((e) => console.error(e));
   }, []);
 
   const loadGruppen = useCallback(() => {
@@ -79,7 +89,7 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
     <>
       <h1 className={titleStyle}>Mitteilungen</h1>
       <div className={"flex flex-col-reverse"}>
-        {mitteilungen.map((mitteilung) => (
+        {filteredMitteilungen.map((mitteilung) => (
           <div className={cardStyle} key={mitteilung.id}>
             <div className={"card-body"}>
               <div className={"card-title"}>
@@ -152,7 +162,7 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
                           />
                         </fieldset>
                         <p>{mitteilung.gruppenIds}</p>
-                        <fieldset className="fieldset">
+                        <fieldset className="fieldset flex flex-row flex-wrap gap-4">
                           <legend className="fieldset-legend">Gruppen</legend>
                           {gruppen.map((gruppe) => (
                             <label className={"label"} key={gruppe.id}>
@@ -194,6 +204,26 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
             </div>
           </div>
         ))}
+        <div className={cardStyle}>
+          <div className={"card-body"}>
+            <div className={"card-title"}>
+              <h2>Filter</h2>
+            </div>
+            <label className="select select-bordered w-full">
+              <span className="label">Gruppe</span>
+              <select onChange={(e) => setFilterGruppe(e.currentTarget.value)}>
+                <option selected value={"alle"}>
+                  Alle Gruppen
+                </option>
+                {gruppen.map((g) => (
+                  <option key={g.id} value={g.id}>
+                    {g.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
         {appUser ? (
           <div className={cardStyle}>
             <form onSubmit={createMitteilung} className={"card-body"}>
@@ -216,7 +246,7 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
                   name={"content"}
                 ></textarea>
               </fieldset>
-              <fieldset className="fieldset">
+              <fieldset className="fieldset flex flex-row flex-wrap gap-4">
                 <legend className="fieldset-legend">Gruppen</legend>
                 {gruppen.map((gruppe) => (
                   <label className={"label"} key={gruppe.id}>
