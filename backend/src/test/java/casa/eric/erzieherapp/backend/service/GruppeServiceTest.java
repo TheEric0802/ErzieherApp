@@ -43,6 +43,7 @@ class GruppeServiceTest {
 
     @Test
     void deleteGruppe_shouldDeleteGruppe() {
+        when(gruppeRepository.existsById("ID1")).thenReturn(true);
         gruppeService.deleteGruppe("ID1");
         verify(gruppeRepository, times(1)).deleteById("ID1");
     }

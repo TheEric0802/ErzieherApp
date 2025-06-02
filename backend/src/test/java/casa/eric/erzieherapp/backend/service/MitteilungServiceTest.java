@@ -44,6 +44,7 @@ class MitteilungServiceTest {
 
     @Test
     void deleteMitteilung_ShouldDeleteMitteilung() {
+        when(mitteilungRepository.existsById("DeleteID")).thenReturn(true);
         mitteilungService.deleteMitteilung("DeleteID");
         verify(mitteilungRepository, times(1)).deleteById("DeleteID");
     }

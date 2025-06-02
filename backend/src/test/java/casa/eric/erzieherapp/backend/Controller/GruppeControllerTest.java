@@ -39,7 +39,7 @@ class GruppeControllerTest {
                 .contentType("application/json")
                 .content("""
                     {"name": "Gruppe1"}
-                """)).andExpect(status().isOk())
+                """)).andExpect(status().isCreated())
                 .andExpect(content().json("""
                     {"name": "Gruppe1"}
                 """))
@@ -64,6 +64,6 @@ class GruppeControllerTest {
     @WithMockUser
     void deleteGruppe() throws Exception {
         gruppeRepository.save(new Gruppe("ID2", "Gruppe2"));
-        mockMvc.perform(delete("/api/gruppe/ID2")).andExpect(status().isOk());
+        mockMvc.perform(delete("/api/gruppe/ID2")).andExpect(status().isNoContent());
     }
 }

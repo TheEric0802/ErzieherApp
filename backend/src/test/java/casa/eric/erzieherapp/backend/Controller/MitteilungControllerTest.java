@@ -39,7 +39,7 @@ class MitteilungControllerTest {
                 .content("""
                     {"title": "TitelCreate", "content": "ContentCreate"}
                 """))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().json("""
                     {"title": "TitelCreate", "content": "ContentCreate"}
                 """))
@@ -65,6 +65,6 @@ class MitteilungControllerTest {
     @WithMockUser
     void deleteMitteilung_ShouldReturnOk() throws Exception {
         mitteilungRepository.save(new Mitteilung("DELETE","TitelDELETE", "ContentDELETE"));
-        mockMvc.perform(delete("/api/mitteilung/DELETE")).andExpect(status().isOk());
+        mockMvc.perform(delete("/api/mitteilung/DELETE")).andExpect(status().isNoContent());
     }
 }
