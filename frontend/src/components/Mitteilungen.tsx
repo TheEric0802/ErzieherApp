@@ -53,8 +53,19 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
     if (!dto.title || !dto.content) return;
     axios
       .post<mitteilung>("api/mitteilung", dto)
-      .then(() => loadMitteilungen())
-      .catch((e) => console.error(e));
+      .then(() => {
+        loadMitteilungen();
+        console.log(e);
+        if ((e.target as HTMLFormElement).getAttribute("id") == "error_form") {
+          (
+            document.getElementById("error_modal")! as HTMLDialogElement
+          ).close();
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+        loadMitteilungen();
+      });
   }
 
   function updateMitteilung(e: React.FormEvent<HTMLFormElement>) {
@@ -75,19 +86,88 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
           document.getElementById(`edit_modal_${dto.id}`)! as HTMLDialogElement
         ).close();
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        if (e.response.status === 404) {
+          const errorModal = document.getElementById(
+            "error_modal",
+          ) as HTMLDialogElement;
+          const errorForm = document.getElementById(
+            "error_form",
+          ) as HTMLFormElement;
+          errorForm.reset();
+          for (const key of ["title", "content"] as const) {
+            const elem = errorForm.elements.namedItem(key) as HTMLInputElement;
+            if (dto[key]) {
+              elem.value = dto[key] as string;
+            }
+          }
+          const checkboxes = errorForm.elements.namedItem(
+            "gruppenIds",
+          ) as NodeList;
+          checkboxes.forEach((e) => {
+            if (dto.gruppenIds.includes((e as HTMLInputElement).value)) {
+              (e as HTMLInputElement).checked = true;
+            }
+          });
+          (
+            document.getElementById(
+              `edit_modal_${dto.id}`,
+            )! as HTMLDialogElement
+          ).close();
+          errorModal.showModal();
+          loadMitteilungen();
+        } else {
+          loadMitteilungen();
+          console.error(e);
+        }
+      });
   }
 
   function deleteMitteilung(id: string) {
     axios
       .delete("api/mitteilung/" + id)
       .then(() => loadMitteilungen())
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        loadMitteilungen();
+        console.error(e);
+      });
   }
 
   return (
     <>
       <h1 className={titleStyle}>Mitteilungen</h1>
+      <dialog id="error_modal" className="modal">
+        <div className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <p className="py-4">
+            Die zu ändernde Mitteilung konnte nicht gefunden werden. Möchten Sie
+            die Mitteilung neu erstellen?
+          </p>
+          <form onSubmit={createMitteilung} id="error_form">
+            <input name={"id"} defaultValue="" type={"hidden"} />
+            <input type="hidden" name={"title"} defaultValue="" />
+            <legend className="fieldset-legend">Inhalt</legend>
+            <input type="hidden" name={"content"} defaultValue="" />
+            <legend className="fieldset-legend">Gruppen</legend>
+            {gruppen.map((gruppe) => (
+              <input
+                key={gruppe.id}
+                type={"checkbox"}
+                name={"gruppenIds"}
+                className={"hidden"}
+                value={gruppe.id}
+                defaultChecked={false}
+              />
+            ))}
+            <div className="modal-action">
+              <button className="btn btn-primary">Ja</button>
+              <form method="dialog">
+                <button className="btn btn-secondary">Nein</button>
+              </form>
+            </div>
+          </form>
+        </div>
+      </dialog>
       <div className={"flex flex-col-reverse"}>
         {filteredMitteilungen.map((mitteilung) => (
           <div className={cardStyle} key={mitteilung.id}>

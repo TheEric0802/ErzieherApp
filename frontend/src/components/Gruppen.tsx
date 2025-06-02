@@ -41,14 +41,20 @@ export default function Gruppen({ appUser }: GruppenProps) {
           document.getElementById(`edit_modal_${dto.id}`)! as HTMLDialogElement
         ).close();
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        loadGruppen();
+      });
   }
 
   function deleteGruppe(id: string) {
     axios
       .delete<gruppe>(`api/gruppe/${id}`)
       .then(() => loadGruppen())
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        loadGruppen();
+      });
   }
 
   return (

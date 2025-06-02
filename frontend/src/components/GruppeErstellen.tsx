@@ -24,7 +24,10 @@ export default function GruppeErstellen({ appUser }: GruppeErstellenProps) {
     axios
       .post<gruppe>("api/gruppe", Object.fromEntries(formData))
       .then(() => nav("/gruppen"))
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        nav("/gruppen");
+      });
   }
 
   return (
