@@ -4,6 +4,7 @@ import casa.eric.erzieherapp.backend.model.Mitteilung;
 import casa.eric.erzieherapp.backend.model.MitteilungDTO;
 import casa.eric.erzieherapp.backend.service.MitteilungService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class MitteilungController {
         return mitteilungService.getAllMitteilungen();
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Mitteilung createMitteilung(@RequestBody MitteilungDTO mitteilung) {
         return mitteilungService.createMitteilung(mitteilung);
@@ -30,6 +32,7 @@ public class MitteilungController {
         return mitteilungService.updateMitteilung(id, mitteilung);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteMitteilung(@PathVariable String id) {
         mitteilungService.deleteMitteilung(id);
