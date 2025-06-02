@@ -291,10 +291,11 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
             </div>
             <label className="select select-bordered w-full">
               <span className="label">Gruppe</span>
-              <select onChange={(e) => setFilterGruppe(e.currentTarget.value)}>
-                <option selected value={"alle"}>
-                  Alle Gruppen
-                </option>
+              <select
+                onChange={(e) => setFilterGruppe(e.currentTarget.value)}
+                defaultValue={"alle"}
+              >
+                <option value={"alle"}>Alle Gruppen</option>
                 {gruppen.map((g) => (
                   <option key={g.id} value={g.id}>
                     {g.name}
