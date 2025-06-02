@@ -26,7 +26,8 @@ public class MitteilungService {
     public Mitteilung updateMitteilung(String id, MitteilungDTO mitteilung) {
         Mitteilung mitteilungToUpdate = mitteilungRepository.findById(id).get()
                 .withTitle(mitteilung.title())
-                .withContent(mitteilung.content());
+                .withContent(mitteilung.content())
+                .withGruppenIds(mitteilung.gruppenIds());
         return mitteilungRepository.save(mitteilungToUpdate);
     }
 
