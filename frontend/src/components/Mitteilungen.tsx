@@ -50,10 +50,15 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
   function updateMitteilung(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const formData: FormData = new FormData(e.currentTarget);
-    const dto = Object.fromEntries(formData);
+    const dto = {
+      id: formData.get("id"),
+      title: formData.get("title"),
+      content: formData.get("content"),
+      gruppenIds: formData.getAll("gruppenIds"),
+    };
     if (!dto.title || !dto.content) return;
     axios
-      .put<mitteilung>(`api/mitteilung/${dto.id}`, Object.fromEntries(formData))
+      .put<mitteilung>(`api/mitteilung/${dto.id}`, dto)
       .then(() => {
         loadMitteilungen();
         (
@@ -145,6 +150,24 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
                             name={"content"}
                             defaultValue={mitteilung.content}
                           />
+                        </fieldset>
+                        <p>{mitteilung.gruppenIds}</p>
+                        <fieldset className="fieldset">
+                          <legend className="fieldset-legend">Gruppen</legend>
+                          {gruppen.map((gruppe) => (
+                            <label className={"label"} key={gruppe.id}>
+                              <input
+                                type={"checkbox"}
+                                name={"gruppenIds"}
+                                className={"checkbox"}
+                                value={gruppe.id}
+                                defaultChecked={mitteilung.gruppenIds?.includes(
+                                  gruppe.id,
+                                )}
+                              />
+                              {gruppe.name}
+                            </label>
+                          ))}
                         </fieldset>
                         <div className="modal-action">
                           <button className="btn btn-primary">Senden</button>
