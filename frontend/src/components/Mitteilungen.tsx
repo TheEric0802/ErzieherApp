@@ -55,7 +55,6 @@ export default function Mitteilungen({ appUser }: MitteilungenProps) {
       .post<mitteilung>("api/mitteilung", dto)
       .then(() => {
         loadMitteilungen();
-        console.log(e);
         if ((e.target as HTMLFormElement).getAttribute("id") == "error_form") {
           (
             document.getElementById("error_modal")! as HTMLDialogElement
