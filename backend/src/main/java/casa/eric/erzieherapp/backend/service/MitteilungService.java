@@ -33,6 +33,9 @@ public class MitteilungService {
     }
 
     public void deleteMitteilung(String id) {
+        if (!mitteilungRepository.existsById(id)) {
+            throw new NoSuchElementException("Mitteilung not found");
+        }
         mitteilungRepository.deleteById(id);
     }
 }

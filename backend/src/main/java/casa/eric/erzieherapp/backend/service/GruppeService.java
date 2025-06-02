@@ -31,6 +31,9 @@ public class GruppeService {
     }
 
     public void deleteGruppe(String id) {
+        if (!gruppeRepository.existsById(id)) {
+            throw new NoSuchElementException("Gruppe not found");
+        }
         gruppeRepository.deleteById(id);
     }
 }
