@@ -1,13 +1,13 @@
-import type { appUser } from "../types/appUser.ts";
+import type { appUser } from "../../types/appUser.ts";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { mitteilung } from "../types/mitteilung.ts";
+import type { mitteilung } from "../../types/mitteilung.ts";
 import axios from "axios";
 import * as React from "react";
-import { titleStyle } from "../App.tsx";
-import type { gruppe } from "../types/gruppe.ts";
-import Card from "./ui/Card.tsx";
-import Modal, { type ModalHandle } from "./ui/Modal.tsx";
-import MitteilungFormInputs from "./ui/MitteilungFormInputs.tsx";
+import { titleStyle } from "../../App.tsx";
+import type { gruppe } from "../../types/gruppe.ts";
+import Card from "../ui/Card.tsx";
+import Modal, { type ModalHandle } from "../ui/Modal.tsx";
+import MitteilungFormInputs from "../ui/MitteilungFormInputs.tsx";
 
 type MitteilungenProps = {
   appUser: appUser | null | undefined;

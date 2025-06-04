@@ -3,13 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import type { appUser } from "./types/appUser.ts";
 import Header from "./components/Header.tsx";
-import Mitteilungen from "./components/Mitteilungen.tsx";
+import Mitteilungen from "./components/pages/Mitteilungen.tsx";
 import { Route, Routes } from "react-router-dom";
-import Gruppen from "./components/Gruppen.tsx";
-import GruppeErstellen from "./components/GruppeErstellen.tsx";
+import Gruppen from "./components/pages/Gruppen.tsx";
+import GruppeErstellen from "./components/pages/GruppeErstellen.tsx";
 
 export const containerStyle = " container mx-auto px-4";
-export const cardStyle = " card card-border bg-base-100 shadow-sm my-2";
 export const titleStyle = " text-3xl my-2 font-semibold";
 
 function App() {
