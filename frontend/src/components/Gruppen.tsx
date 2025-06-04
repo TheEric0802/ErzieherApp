@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import type { gruppe } from "../types/gruppe.ts";
 import { useNavigate } from "react-router-dom";
 import type { appUser } from "../types/appUser.ts";
-import { cardStyle, titleStyle } from "../App.tsx";
+import { titleStyle } from "../App.tsx";
 import * as React from "react";
+import Card from "./ui/Card.tsx";
+import Modal, { type ModalHandle } from "./ui/Modal.tsx";
 
 type GruppenProps = {
   appUser: appUser | null | undefined;
@@ -16,6 +18,8 @@ export default function Gruppen({ appUser }: GruppenProps) {
     nav("/");
   }
   const [gruppen, setGruppen] = useState<gruppe[]>([]);
+
+  const editModalRefs = useRef<Record<string, ModalHandle | null>>({});
 
   const loadGruppen = useCallback(() => {
     axios
@@ -37,9 +41,7 @@ export default function Gruppen({ appUser }: GruppenProps) {
       .put<gruppe>(`api/gruppe/${dto.id}`, Object.fromEntries(formData))
       .then(() => {
         loadGruppen();
-        (
-          document.getElementById(`edit_modal_${dto.id}`)! as HTMLDialogElement
-        ).close();
+        editModalRefs.current[dto.id as string]?.close();
       })
       .catch((e) => {
         console.error(e);
@@ -62,65 +64,60 @@ export default function Gruppen({ appUser }: GruppenProps) {
       <h1 className={titleStyle}>Gruppen</h1>
       <div className={"flex flex-row flex-wrap gap-4"}>
         {gruppen.map((g) => (
-          <div className={cardStyle} key={g.id}>
-            <div className={"card-body"}>
-              <h2 className={"card-title"}>{g.name}</h2>
-              <div className={"card-actions"}>
+          <Card
+            title={g.name}
+            key={g.id}
+            actions={
+              <>
                 <button
                   className="btn btn-primary"
                   onClick={() => {
-                    (
-                      document.getElementById(
-                        `edit_form_${g.id}`,
-                      )! as HTMLFormElement
-                    ).reset();
-                    (
-                      document.getElementById(
-                        `edit_modal_${g.id}`,
-                      )! as HTMLDialogElement
-                    ).showModal();
+                    editModalRefs.current[g.id]?.resetForm();
+                    editModalRefs.current[g.id]?.show();
                   }}
                 >
                   Bearbeiten
                 </button>
-                <dialog id={`edit_modal_${g.id}`} className="modal">
-                  <div className="modal-box">
-                    <h3 className="font-bold text-lg">Hello!</h3>
-                    <p className="py-4">
-                      Press ESC key or click the button below to close
-                      edit_modal_{g.id}
-                    </p>
-                    <form onSubmit={updateGruppe} id={`edit_form_${g.id}`}>
-                      <input name={"id"} value={g.id} type={"hidden"} />
-                      <label className="input w-full">
-                        <span className="label">Name</span>
-                        <input
-                          type="text"
-                          placeholder="Hier tippen ..."
-                          name={"name"}
-                          defaultValue={g.name}
-                        />
-                      </label>
-                      <div className="modal-action">
-                        <button className="btn btn-primary">Senden</button>
-                        <form method="dialog">
-                          <button className="btn btn-secondary">
-                            Abbrechen
-                          </button>
-                        </form>
-                      </div>
-                    </form>
-                  </div>
-                </dialog>
+                <Modal
+                  title={"Hello!"}
+                  ref={(el) => {
+                    editModalRefs.current[g.id] = el;
+                  }}
+                  isForm={true}
+                  onSubmit={updateGruppe}
+                  actions={
+                    <>
+                      <button className="btn btn-primary">Senden</button>
+                      <button
+                        className="btn btn-secondary"
+                        type="button"
+                        onClick={() => editModalRefs.current[g.id]?.close()}
+                      >
+                        Abbrechen
+                      </button>
+                    </>
+                  }
+                >
+                  <input name={"id"} value={g.id} type={"hidden"} />
+                  <label className="input w-full">
+                    <span className="label">Name</span>
+                    <input
+                      type="text"
+                      placeholder="Hier tippen ..."
+                      name={"name"}
+                      defaultValue={g.name}
+                    />
+                  </label>
+                </Modal>
                 <button
                   className={"btn btn-error"}
                   onClick={() => deleteGruppe(g.id)}
                 >
                   Löschen
                 </button>
-              </div>
-            </div>
-          </div>
+              </>
+            }
+          />
         ))}
       </div>
     </>
