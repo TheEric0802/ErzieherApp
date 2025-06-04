@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import axios from "axios";
-import type { gruppe } from "../types/gruppe.ts";
+import type { gruppe } from "../../types/gruppe.ts";
 import { useNavigate } from "react-router-dom";
-import type { appUser } from "../types/appUser.ts";
-import { titleStyle } from "../App.tsx";
+import type { appUser } from "../../types/appUser.ts";
+import { titleStyle } from "../../App.tsx";
 import * as React from "react";
-import Card from "./ui/Card.tsx";
-import Modal, { type ModalHandle } from "./ui/Modal.tsx";
+import Card from "../ui/Card.tsx";
+import Modal, { type ModalHandle } from "../ui/Modal.tsx";
 
 type GruppenProps = {
   appUser: appUser | null | undefined;

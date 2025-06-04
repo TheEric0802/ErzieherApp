@@ -1,10 +1,10 @@
 import * as React from "react";
-import type { appUser } from "../types/appUser.ts";
-import { titleStyle } from "../App.tsx";
+import type { appUser } from "../../types/appUser.ts";
+import { titleStyle } from "../../App.tsx";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import type { gruppe } from "../types/gruppe.ts";
-import Card from "./ui/Card.tsx";
+import type { gruppe } from "../../types/gruppe.ts";
+import Card from "../ui/Card.tsx";
 
 type GruppeErstellenProps = {
   appUser: appUser | null | undefined;
