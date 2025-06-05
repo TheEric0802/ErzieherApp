@@ -2,7 +2,6 @@ package casa.eric.erzieherapp.backend.service;
 
 import casa.eric.erzieherapp.backend.model.Gruppe;
 import casa.eric.erzieherapp.backend.model.Kind;
-import casa.eric.erzieherapp.backend.model.KindDTO;
 import casa.eric.erzieherapp.backend.repository.KindRepository;
 import org.junit.jupiter.api.Test;
 
