@@ -30,7 +30,6 @@ class KindServiceTest {
     void createKind() {
         Kind kind = new Kind("ID1", "Vorname1", "Nachname1", new Gruppe("GID1", "Gruppe1"));
         when(idService.generateId()).thenReturn("ID1");
-        Kind result = kindService.createKind(new KindDTO("Vorname1", "Nachname1", new Gruppe("GID1", "Gruppe1")));
         verify(kindRepository, times(1)).save(kind);
     }
 }
