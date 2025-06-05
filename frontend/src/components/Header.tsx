@@ -35,6 +35,12 @@ export default function Header({ appUser }: HeaderProps) {
               >
                 Gruppen
               </button>
+              <button
+                className={"btn btn-primary join-item"}
+                onClick={() => nav("/kinder")}
+              >
+                Kinder
+              </button>
             </div>
           ) : null}
           <div className={"flex gap-2 navbar-end"}>
