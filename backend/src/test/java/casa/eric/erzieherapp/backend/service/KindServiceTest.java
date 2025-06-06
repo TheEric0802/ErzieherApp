@@ -2,6 +2,7 @@ package casa.eric.erzieherapp.backend.service;
 
 import casa.eric.erzieherapp.backend.model.Gruppe;
 import casa.eric.erzieherapp.backend.model.Kind;
+import casa.eric.erzieherapp.backend.model.KindDTO;
 import casa.eric.erzieherapp.backend.repository.KindRepository;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +30,7 @@ class KindServiceTest {
     void createKind() {
         Kind kind = new Kind("ID1", "Vorname1", "Nachname1", new Gruppe("GID1", "Gruppe1"));
         when(idService.generateId()).thenReturn("ID1");
+        kindService.createKind(new KindDTO("Vorname1", "Nachname1", new Gruppe("GID1", "Gruppe1")));
         verify(kindRepository, times(1)).save(kind);
     }
 }
