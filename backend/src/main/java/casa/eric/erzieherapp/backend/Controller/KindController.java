@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/kind")
 @AllArgsConstructor
-public class KindKontroller {
+public class KindController {
 
     private final KindService kindService;
 
