@@ -19,7 +19,7 @@ export default function Card({
   onSubmit = () => {},
 }: CardProps) {
   return (
-    <div className="card card-border bg-base-100 shadow-sm my-2">
+    <div className="card card-border bg-base-100 shadow-sm my-2 flex-grow">
       <CardBody isForm={isForm} onSubmit={onSubmit}>
         <h2 className="card-title">{title}</h2>
         {badges.length > 0 && (
