@@ -61,6 +61,11 @@ export default function Header({ appUser }: HeaderProps) {
                       </button>
                     </li>
                     <li>
+                      <button onClick={() => nav("/neuesKind")}>
+                        Neues Kind anlegen
+                      </button>
+                    </li>
+                    <li>
                       <button
                         onClick={() => window.open(host + "/logout", "_self")}
                       >

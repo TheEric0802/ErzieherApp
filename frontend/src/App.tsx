@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import Gruppen from "./components/pages/Gruppen.tsx";
 import GruppeErstellen from "./components/pages/GruppeErstellen.tsx";
 import Kinder from "./components/pages/Kinder.tsx";
+import KindAnlegen from "./components/pages/KindAnlegen.tsx";
 
 export const containerStyle = " container mx-auto px-4";
 export const titleStyle = " text-3xl my-2 font-semibold";
@@ -44,6 +45,10 @@ function App() {
             element={<GruppeErstellen appUser={appUser} />}
           />
           <Route path="/kinder" element={<Kinder appUser={appUser} />} />
+          <Route
+            path="/neuesKind"
+            element={<KindAnlegen appUser={appUser} />}
+          />
         </Routes>
       </div>
     </>
