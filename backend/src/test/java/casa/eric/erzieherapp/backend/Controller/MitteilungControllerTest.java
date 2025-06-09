@@ -22,7 +22,6 @@ class MitteilungControllerTest {
     MitteilungRepository mitteilungRepository;
 
     @Test
-    @WithMockUser
     void getAllMitteilungen_ShouldReturnListOfMitteilungen() throws Exception {
         mitteilungRepository.save(new Mitteilung("1","Titel1", "Content1"));
         mockMvc.perform(get("/api/mitteilung")).andExpect(status().isOk())
