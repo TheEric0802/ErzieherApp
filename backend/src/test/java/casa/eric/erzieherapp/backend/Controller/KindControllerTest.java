@@ -11,8 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -51,5 +50,27 @@ class KindControllerTest {
                     {"firstName": "Vorname2", "lastName": "Nachname2", "gruppe": {"id": "GID2", "name": "Gruppe2"}}
                 """))
                 .andExpect(jsonPath("$.id").isNotEmpty());
+    }
+
+    @Test
+    @WithMockUser
+    void updateKind() throws Exception {
+        kindRepository.save(new Kind("ID2", "Vorname2", "Nachname2", new Gruppe("GID2", "Gruppe2")));
+        mockMvc.perform(put("/api/kind/ID2")
+                .contentType("application/json")
+                .content("""
+                {"firstName": "VornameUpdated", "lastName": "NachnameUpdated", "gruppe": {"id": "GID2", "name": "Gruppe2"}}
+                """))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {"id": "ID2", "firstName": "VornameUpdated", "lastName": "NachnameUpdated", "gruppe": {"id": "GID2", "name": "Gruppe2"}}
+                """));
+    }
+
+    @Test
+    @WithMockUser
+    void deleteKind() throws Exception {
+        kindRepository.save(new Kind("ID3", "Vorname3", "Nachname3", new Gruppe("GID3", "Gruppe3")));
+        mockMvc.perform(delete("/api/kind/ID3")).andExpect(status().isNoContent());
     }
 }

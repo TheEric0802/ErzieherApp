@@ -26,4 +26,15 @@ public class KindController {
     public Kind createKind(@RequestBody KindDTO kind) {
         return kindService.createKind(kind);
     }
+
+    @PutMapping("/{id}")
+    public Kind updateKind(@PathVariable String id, @RequestBody KindDTO kind) {
+        return kindService.updateKind(id, kind);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public void deleteKind(@PathVariable String id) {
+        kindService.deleteKind(id);
+    }
 }
