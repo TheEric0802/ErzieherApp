@@ -1,7 +1,7 @@
 import type { gruppe } from "./gruppe.ts";
 
 export type kind = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   gruppe: gruppe;
