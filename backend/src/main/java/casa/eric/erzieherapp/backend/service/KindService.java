@@ -26,9 +26,9 @@ public class KindService {
 
     public Kind updateKind(String id, KindDTO kind) {
         Kind kindToUpdate = kindRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Kind not found"));
-        kindToUpdate = kindToUpdate.withFirstName(kind.firstName());
-        kindToUpdate = kindToUpdate.withLastName(kind.lastName());
-        kindToUpdate = kindToUpdate.withGruppe(kind.gruppe());
+        kindToUpdate = kindToUpdate.withFirstName(kind.firstName())
+                .withLastName(kind.lastName())
+                .withGruppe(kind.gruppe());
         return kindRepository.save(kindToUpdate);
     }
 
