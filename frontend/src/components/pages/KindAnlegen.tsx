@@ -7,6 +7,7 @@ import axios from "axios";
 import type { gruppe } from "../../types/gruppe.ts";
 import * as React from "react";
 import type { mitteilung } from "../../types/mitteilung.ts";
+import KindFormInputs from "../ui/KindFormInputs.tsx";
 
 type kindAnlegenProps = {
   appUser: appUser | null | undefined;
@@ -60,37 +61,38 @@ export default function KindAnlegen({ appUser }: kindAnlegenProps) {
           onSubmit={createKind}
           actions={<button className="btn btn-primary">Senden</button>}
         >
-          <label className="input w-full">
-            <span className="label">Vorname</span>
-            <input
-              type="text"
-              placeholder="Hier tippen ..."
-              name={"firstName"}
-            />
-          </label>
-          <label className="input w-full">
-            <span className="label">Nachname</span>
-            <input
-              type="text"
-              placeholder="Hier tippen ..."
-              name={"lastName"}
-            />
-          </label>
-          <fieldset className="fieldset flex flex-row flex-wrap gap-4">
-            <legend className="fieldset-legend">Gruppe</legend>
-            {gruppen.map((gruppe) => (
-              <label className={"label"} key={gruppe.id}>
-                <input
-                  type={"radio"}
-                  name={"gruppenId"}
-                  className={"checkbox"}
-                  value={gruppe.id}
-                  defaultChecked={false}
-                />
-                {gruppe.name}
-              </label>
-            ))}
-          </fieldset>
+          {/*<label className="input w-full">*/}
+          {/*  <span className="label">Vorname</span>*/}
+          {/*  <input*/}
+          {/*    type="text"*/}
+          {/*    placeholder="Hier tippen ..."*/}
+          {/*    name={"firstName"}*/}
+          {/*  />*/}
+          {/*</label>*/}
+          {/*<label className="input w-full">*/}
+          {/*  <span className="label">Nachname</span>*/}
+          {/*  <input*/}
+          {/*    type="text"*/}
+          {/*    placeholder="Hier tippen ..."*/}
+          {/*    name={"lastName"}*/}
+          {/*  />*/}
+          {/*</label>*/}
+          {/*<fieldset className="fieldset flex flex-row flex-wrap gap-4">*/}
+          {/*  <legend className="fieldset-legend">Gruppe</legend>*/}
+          {/*  {gruppen.map((gruppe) => (*/}
+          {/*    <label className={"label"} key={gruppe.id}>*/}
+          {/*      <input*/}
+          {/*        type={"radio"}*/}
+          {/*        name={"gruppenId"}*/}
+          {/*        className={"checkbox"}*/}
+          {/*        value={gruppe.id}*/}
+          {/*        defaultChecked={false}*/}
+          {/*      />*/}
+          {/*      {gruppe.name}*/}
+          {/*    </label>*/}
+          {/*  ))}*/}
+          {/*</fieldset>*/}
+          <KindFormInputs gruppen={gruppen} />
         </Card>
       </div>
     </>
