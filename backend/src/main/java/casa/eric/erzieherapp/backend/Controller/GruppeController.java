@@ -21,6 +21,11 @@ public class GruppeController {
         return gruppeService.getAllGruppen();
     }
 
+    @GetMapping("/{id}")
+    public Gruppe getGruppeById(@PathVariable String id) {
+        return gruppeService.getGruppeById(id);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Gruppe createGruppe(@RequestBody GruppeDTO gruppe) {

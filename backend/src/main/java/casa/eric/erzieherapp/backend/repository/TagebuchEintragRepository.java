@@ -6,10 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TagebuchEintragRepository extends MongoRepository<TagebuchEintrag, String> {
-    TagebuchEintrag findByGruppeIdAndDatum(String gruppeId, LocalDate datum);
+    Optional<TagebuchEintrag> findByGruppeIdAndDatum(String gruppeId, LocalDate datum);
 
     List<TagebuchEintrag> findByGruppeId(String gruppeId);
 }

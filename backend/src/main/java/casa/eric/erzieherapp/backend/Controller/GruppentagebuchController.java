@@ -4,6 +4,7 @@ import casa.eric.erzieherapp.backend.model.TagebuchEintrag;
 import casa.eric.erzieherapp.backend.model.TagebuchEintragDTO;
 import casa.eric.erzieherapp.backend.service.GruppentagebuchService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -31,8 +32,20 @@ public class GruppentagebuchController {
         return gruppentagebuchService.getTagebuchEintraegeByGruppeId(gruppeId);
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public TagebuchEintrag createTagebuchEintrag(@RequestBody TagebuchEintragDTO tagebuchEintrag) {
         return gruppentagebuchService.createTagebuchEintrag(tagebuchEintrag);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/initial/{gruppeId}")
+    public TagebuchEintrag createInitialTagebuchEintrag(@PathVariable String gruppeId) {
+        return gruppentagebuchService.createInitialTagebuchEintrag(gruppeId);
+    }
+
+    @PutMapping("/{gruppeId}/{datum}")
+    public TagebuchEintrag updateTagebuchEintrag(@PathVariable String gruppeId, @PathVariable LocalDate datum, @RequestBody TagebuchEintragDTO tagebuchEintrag) {
+        return gruppentagebuchService.updateTagebuchEintrag(gruppeId, datum, tagebuchEintrag);
     }
 }
