@@ -59,6 +59,11 @@ export default function Gruppen({ appUser }: GruppenProps) {
       });
   }
 
+  const getDatum: () => string = () =>
+    new Date(Date.now() - new Date(Date.now()).getTimezoneOffset() * 60 * 1000)
+      .toISOString()
+      .split("T")[0];
+
   return (
     <>
       <h1 className={titleStyle}>Gruppen</h1>
@@ -114,6 +119,18 @@ export default function Gruppen({ appUser }: GruppenProps) {
                   onClick={() => deleteGruppe(g.id)}
                 >
                   Löschen
+                </button>
+                <button
+                  className={"btn btn-info"}
+                  onClick={() => nav(`/gruppentagebuch/${g.id}/${getDatum()}`)}
+                >
+                  Gruppentagebuch Heute
+                </button>
+                <button
+                  className={"btn btn-accent"}
+                  onClick={() => nav(`/gruppentagebuchUebersicht/${g.id}`)}
+                >
+                  Gruppentagebuch Übersicht
                 </button>
               </>
             }

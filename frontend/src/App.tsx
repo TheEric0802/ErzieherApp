@@ -9,6 +9,8 @@ import Gruppen from "./components/pages/Gruppen.tsx";
 import GruppeErstellen from "./components/pages/GruppeErstellen.tsx";
 import Kinder from "./components/pages/Kinder.tsx";
 import KindAnlegen from "./components/pages/KindAnlegen.tsx";
+import GruppentagebuchUebersicht from "./components/pages/GruppentagebuchUebersicht.tsx";
+import Gruppentagebuch from "./components/pages/Gruppentagebuch.tsx";
 
 export const containerStyle = " container mx-auto px-4";
 export const titleStyle = " text-3xl my-2 font-semibold";
@@ -48,6 +50,14 @@ function App() {
           <Route
             path="/neuesKind"
             element={<KindAnlegen appUser={appUser} />}
+          />
+          <Route
+            path="/gruppentagebuch/:gruppenId/:datum"
+            element={<Gruppentagebuch appUser={appUser} />}
+          />
+          <Route
+            path="/gruppentagebuchUebersicht/:gruppenId"
+            element={<GruppentagebuchUebersicht appUser={appUser} />}
           />
         </Routes>
       </div>

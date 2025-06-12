@@ -20,6 +20,10 @@ public class GruppeService {
         return gruppeRepository.findAll();
     }
 
+    public Gruppe getGruppeById(String id) {
+        return gruppeRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Gruppe not found"));
+    }
+
     public Gruppe createGruppe(GruppeDTO gruppe) {
         return gruppeRepository.save(new Gruppe(idService.generateId(), gruppe.name()));
     }

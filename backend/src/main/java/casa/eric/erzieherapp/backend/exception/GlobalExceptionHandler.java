@@ -15,4 +15,10 @@ public class GlobalExceptionHandler {
     public ErrorMessage handleNoSuchElementException(NoSuchElementException e) {
         return new ErrorMessage(e.getMessage());
     }
+
+    @ExceptionHandler(com.mongodb.MongoWriteException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorMessage handleMongoWriteException(com.mongodb.MongoWriteException e) {
+        return new ErrorMessage(e.getMessage());
+    }
 }

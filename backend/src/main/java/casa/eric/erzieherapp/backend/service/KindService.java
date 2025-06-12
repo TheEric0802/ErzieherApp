@@ -20,6 +20,10 @@ public class KindService {
         return kindRepository.findAll();
     }
 
+    public List<Kind> getKinderByGruppeId(String gruppeId) {
+        return kindRepository.findByGruppeId(gruppeId);
+    }
+
     public Kind createKind(KindDTO kind) {
         return kindRepository.save(new Kind(idService.generateId(), kind.firstName(), kind.lastName(), kind.gruppe()));
     }
