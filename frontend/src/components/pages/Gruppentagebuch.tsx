@@ -142,89 +142,26 @@ export default function Gruppentagebuch({ appUser }: GruppentagebuchProps) {
         </fieldset>
         <div className={"flex flex-row flex-wrap gap-4"}>
           <DndContext onDragEnd={handleDragEnd}>
-            {/*<DroppableCard*/}
-            {/*  droppableId={"anwesenheitUnbekannt"}*/}
-            {/*  cardProps={{ title: "Anwesenheit nicht bekannt" }}*/}
-            {/*>*/}
-            {/*  <DraggableCard*/}
-            {/*    cardProps={{ title: "Test Draggable" }}*/}
-            {/*    draggableId={"1"}*/}
-            {/*  ></DraggableCard>*/}
-            {/*</DroppableCard>*/}
-            {
-              //   {
-              //   anwesenheitUnbekannt: "Anwesenheit nicht bekannt",
-              //   anwesend: "Anwesend",
-              //   krank: "Krank",
-              //   urlaub: "Urlaub",
-              //   unentschuldigt: "Unentschuldigt",
-              // }
-              Array.from(statuses).map(([key, value]) => (
-                <DroppableCard
-                  key={key}
-                  droppableId={key}
-                  cardProps={{ title: value }}
-                >
-                  {(
-                    tagebuchEintrag?.[key as keyof tagebuchEintrag] as kind[]
-                  )?.map((kind) => (
-                    <DraggableCard
-                      key={kind.id}
-                      cardProps={{
-                        title: `${kind.firstName} ${kind.lastName}`,
-                      }}
-                      draggableId={kind.id}
-                      draggableData={kind}
-                    ></DraggableCard>
-                  ))}
-                </DroppableCard>
-              ))
-            }
-            {/*<Card title={"Anwesenheit nicht bekannt"}>*/}
-            {/*  <ul>*/}
-            {/*    {tagebuchEintrag?.anwesenheitUnbekannt.map((kind) => (*/}
-            {/*      <li key={kind.id}>*/}
-            {/*        {kind.firstName} {kind.lastName}*/}
-            {/*      </li>*/}
-            {/*    ))}*/}
-            {/*  </ul>*/}
-            {/*</Card>*/}
-            {/*<Card title={"Anwesend"}>*/}
-            {/*  <ul>*/}
-            {/*    {tagebuchEintrag?.anwesend.map((kind) => (*/}
-            {/*      <li key={kind.id}>*/}
-            {/*        {kind.firstName} {kind.lastName}*/}
-            {/*      </li>*/}
-            {/*    ))}*/}
-            {/*  </ul>*/}
-            {/*</Card>*/}
-            {/*<Card title={"Krank"}>*/}
-            {/*  <ul>*/}
-            {/*    {tagebuchEintrag?.krank.map((kind) => (*/}
-            {/*      <li key={kind.id}>*/}
-            {/*        {kind.firstName} {kind.lastName}*/}
-            {/*      </li>*/}
-            {/*    ))}*/}
-            {/*  </ul>*/}
-            {/*</Card>*/}
-            {/*<Card title={"Urlaub"}>*/}
-            {/*  <ul>*/}
-            {/*    {tagebuchEintrag?.urlaub.map((kind) => (*/}
-            {/*      <li key={kind.id}>*/}
-            {/*        {kind.firstName} {kind.lastName}*/}
-            {/*      </li>*/}
-            {/*    ))}*/}
-            {/*  </ul>*/}
-            {/*</Card>*/}
-            {/*<Card title={"Unentschuldigt"}>*/}
-            {/*  <ul>*/}
-            {/*    {tagebuchEintrag?.unentschuldigt.map((kind) => (*/}
-            {/*      <li key={kind.id}>*/}
-            {/*        {kind.firstName} {kind.lastName}*/}
-            {/*      </li>*/}
-            {/*    ))}*/}
-            {/*  </ul>*/}
-            {/*</Card>*/}
+            {Array.from(statuses).map(([key, value]) => (
+              <DroppableCard
+                key={key}
+                droppableId={key}
+                cardProps={{ title: value }}
+              >
+                {(
+                  tagebuchEintrag?.[key as keyof tagebuchEintrag] as kind[]
+                )?.map((kind) => (
+                  <DraggableCard
+                    key={kind.id}
+                    cardProps={{
+                      title: `${kind.firstName} ${kind.lastName}`,
+                    }}
+                    draggableId={kind.id}
+                    draggableData={kind}
+                  ></DraggableCard>
+                ))}
+              </DroppableCard>
+            ))}
           </DndContext>
         </div>
       </Card>
