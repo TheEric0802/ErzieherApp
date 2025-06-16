@@ -5,6 +5,10 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../ui/Card.tsx";
 import type { tagebuchEintrag } from "../../types/tagebuchEintrag.ts";
+import { DndContext, type DragEndEvent } from "@dnd-kit/core";
+import type { kind } from "../../types/kind.ts";
+import DraggableCard from "../ui/DraggableCard.tsx";
+import DroppableCard from "../ui/DroppableCard.tsx";
 
 type GruppentagebuchProps = {
   appUser: appUser | null | undefined;
@@ -56,6 +60,46 @@ export default function Gruppentagebuch({ appUser }: GruppentagebuchProps) {
       });
   }
 
+  const statuses = new Map([
+    ["anwesenheitUnbekannt", "Anwesenheit nicht bekannt"],
+    ["anwesend", "Anwesend"],
+    ["krank", "Krank"],
+    ["urlaub", "Urlaub"],
+    ["unentschuldigt", "Unentschuldigt"],
+  ]);
+
+  function handleDragEnd(e: DragEndEvent) {
+    const { active, over } = e;
+
+    if (!over) return;
+
+    const kindId = active.id as string;
+    const kind: kind = active.data.current as kind;
+    const newStatus = over.id as string;
+
+    for (const status of statuses.keys()) {
+      const array = tagebuchEintrag![status as keyof tagebuchEintrag] as kind[];
+      if (
+        tagebuchEintrag &&
+        status !== newStatus &&
+        array.some((k) => k.id === kindId)
+      ) {
+        const newArrayOldStatus = [...array];
+        const newArrayNewStatus = [
+          ...(tagebuchEintrag[newStatus as keyof tagebuchEintrag] as kind[]),
+        ];
+        const index = newArrayOldStatus.indexOf(kind);
+        newArrayOldStatus.splice(index, 1);
+        newArrayNewStatus.push(kind);
+        setTagebuchEintrag({
+          ...tagebuchEintrag,
+          [status as keyof tagebuchEintrag]: newArrayOldStatus,
+          [newStatus as keyof tagebuchEintrag]: newArrayNewStatus,
+        });
+      }
+    }
+  }
+
   return (
     <>
       <h1 className={titleStyle}>Gruppentagebuch</h1>
@@ -97,51 +141,28 @@ export default function Gruppentagebuch({ appUser }: GruppentagebuchProps) {
           />
         </fieldset>
         <div className={"flex flex-row flex-wrap gap-4"}>
-          <Card title={"Anwesenheit nicht bekannt"}>
-            <ul>
-              {tagebuchEintrag?.anwesenheitUnbekannt.map((kind) => (
-                <li key={kind.id}>
-                  {kind.firstName} {kind.lastName}
-                </li>
-              ))}
-            </ul>
-          </Card>
-          <Card title={"Anwesend"}>
-            <ul>
-              {tagebuchEintrag?.anwesend.map((kind) => (
-                <li key={kind.id}>
-                  {kind.firstName} {kind.lastName}
-                </li>
-              ))}
-            </ul>
-          </Card>
-          <Card title={"Krank"}>
-            <ul>
-              {tagebuchEintrag?.krank.map((kind) => (
-                <li key={kind.id}>
-                  {kind.firstName} {kind.lastName}
-                </li>
-              ))}
-            </ul>
-          </Card>
-          <Card title={"Urlaub"}>
-            <ul>
-              {tagebuchEintrag?.urlaub.map((kind) => (
-                <li key={kind.id}>
-                  {kind.firstName} {kind.lastName}
-                </li>
-              ))}
-            </ul>
-          </Card>
-          <Card title={"Unentschuldigt"}>
-            <ul>
-              {tagebuchEintrag?.unentschuldigt.map((kind) => (
-                <li key={kind.id}>
-                  {kind.firstName} {kind.lastName}
-                </li>
-              ))}
-            </ul>
-          </Card>
+          <DndContext onDragEnd={handleDragEnd}>
+            {Array.from(statuses).map(([key, value]) => (
+              <DroppableCard
+                key={key}
+                droppableId={key}
+                cardProps={{ title: value }}
+              >
+                {(
+                  tagebuchEintrag?.[key as keyof tagebuchEintrag] as kind[]
+                )?.map((kind) => (
+                  <DraggableCard
+                    key={kind.id}
+                    cardProps={{
+                      title: `${kind.firstName} ${kind.lastName}`,
+                    }}
+                    draggableId={kind.id}
+                    draggableData={kind}
+                  ></DraggableCard>
+                ))}
+              </DroppableCard>
+            ))}
+          </DndContext>
         </div>
       </Card>
     </>

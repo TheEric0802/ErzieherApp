@@ -1,13 +1,16 @@
 import * as React from "react";
 import Badge from "./Badge.tsx";
 
-type CardProps = {
+export type CardProps = {
   children?: React.ReactNode;
   title: string;
   badges?: string[];
   actions?: React.ReactNode;
   isForm?: boolean;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
+  cardRef?:
+    | React.RefObject<HTMLDivElement | null>
+    | ((e: HTMLElement | null) => void);
 };
 
 export default function Card({
