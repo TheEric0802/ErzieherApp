@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -72,6 +73,7 @@ class GruppentagebuchControllerTest {
     }
 
     @Test
+    @WithMockUser
     void createTagebuchEintrag_shouldReturnCreatedTagebuchEintrag() throws Exception {
         Gruppe gruppe = new Gruppe("GID4", "Gruppe4");
         TagebuchEintragDTO eintrag = new TagebuchEintragDTO(
@@ -88,6 +90,7 @@ class GruppentagebuchControllerTest {
     }
 
     @Test
+    @WithMockUser
     void createInitialTagebuchEintrag_shouldReturnInitialTagebuchEintrag() throws Exception {
         Gruppe gruppe = new Gruppe("GID5", "Gruppe5");
         TagebuchEintragDTO eintrag = new TagebuchEintragDTO(
@@ -101,6 +104,7 @@ class GruppentagebuchControllerTest {
     }
 
     @Test
+    @WithMockUser
     void updateTagebuchEintrag_shouldReturnUpdatedTagebuchEintrag() throws Exception {
         Gruppe gruppe = new Gruppe("GID6", "Gruppe6");
         TagebuchEintrag eintrag = new TagebuchEintrag(
