@@ -32,11 +32,9 @@ export default function DraggableCard({
       {...attributes}
       {...listeners}
       style={style}
-      className={"flex-grow"}
+      className={"flex-grow touch-none"}
     >
-      <Card {...cardProps} cardRef={setNodeRef}>
-        {children}
-      </Card>
+      <Card {...cardProps}>{children}</Card>
     </div>
   );
 }

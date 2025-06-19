@@ -18,8 +18,10 @@ export default function DroppableCard({
   });
 
   return (
-    <div ref={setNodeRef} className={"flex-grow"}>
-      <Card {...cardProps}>{children}</Card>
+    <div ref={setNodeRef} className={"flex-grow my-2 h-full"}>
+      <Card {...cardProps} fullHeight={true}>
+        {children}
+      </Card>
     </div>
   );
 }
