@@ -8,9 +8,7 @@ export type CardProps = {
   actions?: React.ReactNode;
   isForm?: boolean;
   onSubmit?: (e: React.FormEvent<HTMLFormElement>) => void;
-  cardRef?:
-    | React.RefObject<HTMLDivElement | null>
-    | ((e: HTMLElement | null) => void);
+  fullHeight?: boolean;
 };
 
 export default function Card({
@@ -20,9 +18,15 @@ export default function Card({
   actions = null,
   isForm = false,
   onSubmit = () => {},
+  fullHeight = false,
 }: CardProps) {
   return (
-    <div className="card card-border bg-base-100 shadow-sm my-2 flex-grow">
+    <div
+      className={
+        "card sm:card-sm card-border bg-base-100 shadow-sm my-2 flex-grow" +
+        (fullHeight ? " h-full" : "")
+      }
+    >
       <CardBody isForm={isForm} onSubmit={onSubmit}>
         <h2 className="card-title">{title}</h2>
         {badges.length > 0 && (

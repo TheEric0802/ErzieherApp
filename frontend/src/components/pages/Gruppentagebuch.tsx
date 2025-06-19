@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import Card from "../ui/Card.tsx";
 import type { tagebuchEintrag } from "../../types/tagebuchEintrag.ts";
-import { DndContext, type DragEndEvent } from "@dnd-kit/core";
+import { DndContext, type DragEndEvent, DragOverlay } from "@dnd-kit/core";
 import type { kind } from "../../types/kind.ts";
 import DraggableCard from "../ui/DraggableCard.tsx";
 import DroppableCard from "../ui/DroppableCard.tsx";
@@ -25,6 +25,7 @@ export default function Gruppentagebuch({ appUser }: GruppentagebuchProps) {
   const datumDate = new Date(datum!);
 
   const [tagebuchEintrag, setTagebuchEintrag] = useState<tagebuchEintrag>();
+  const [draggedKind, setDraggedKind] = useState<kind | null>(null);
 
   const loadTagebuchEintrag = useCallback(() => {
     axios
@@ -68,7 +69,14 @@ export default function Gruppentagebuch({ appUser }: GruppentagebuchProps) {
     ["unentschuldigt", "Unentschuldigt"],
   ]);
 
+  function handleDragStart(e: DragEndEvent) {
+    const { active } = e;
+    const kind: kind = active.data.current as kind;
+    setDraggedKind(kind);
+  }
+
   function handleDragEnd(e: DragEndEvent) {
+    setDraggedKind(null);
     const { active, over } = e;
 
     if (!over) return;
@@ -140,28 +148,91 @@ export default function Gruppentagebuch({ appUser }: GruppentagebuchProps) {
             }}
           />
         </fieldset>
-        <div className={"flex flex-row flex-wrap gap-4"}>
-          <DndContext onDragEnd={handleDragEnd}>
-            {Array.from(statuses).map(([key, value]) => (
-              <DroppableCard
-                key={key}
-                droppableId={key}
-                cardProps={{ title: value }}
-              >
-                {(
-                  tagebuchEintrag?.[key as keyof tagebuchEintrag] as kind[]
-                )?.map((kind) => (
-                  <DraggableCard
-                    key={kind.id}
-                    cardProps={{
-                      title: `${kind.firstName} ${kind.lastName}`,
-                    }}
-                    draggableId={kind.id}
-                    draggableData={kind}
-                  ></DraggableCard>
+        <div className={"flex flex-row gap-4 mb-4"}>
+          <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+            <div className={"flex-none mt-2"}>
+              {Array.from(statuses)
+                .filter((_entry, index) => index === 0)
+                .map(([key, value]) => (
+                  <>
+                    <DroppableCard
+                      key={key}
+                      droppableId={key}
+                      cardProps={{ title: value }}
+                    >
+                      <div className={"flex flex-col gap-2"}>
+                        {(
+                          tagebuchEintrag?.[
+                            key as keyof tagebuchEintrag
+                          ] as kind[]
+                        )
+                          ?.sort(
+                            (a, b) =>
+                              a.lastName.localeCompare(b.lastName) ||
+                              a.firstName.localeCompare(b.firstName),
+                          )
+                          ?.map((kind) => (
+                            <DraggableCard
+                              key={kind.id}
+                              cardProps={{
+                                title: `${kind.firstName} ${kind.lastName}`,
+                              }}
+                              draggableId={kind.id}
+                              draggableData={kind}
+                            ></DraggableCard>
+                          ))}
+                      </div>
+                    </DroppableCard>
+                  </>
                 ))}
-              </DroppableCard>
-            ))}
+            </div>
+            <div className="flex-1 grid grid-cols-2 gap-4 mb-2">
+              {Array.from(statuses)
+                .slice(1)
+                .map(([key, value]) => (
+                  <>
+                    <DroppableCard
+                      key={key}
+                      droppableId={key}
+                      cardProps={{ title: value }}
+                    >
+                      <div className={"flex flex-col gap-2"}>
+                        {(
+                          tagebuchEintrag?.[
+                            key as keyof tagebuchEintrag
+                          ] as kind[]
+                        )
+                          ?.sort(
+                            (a, b) =>
+                              a.lastName.localeCompare(b.lastName) ||
+                              a.firstName.localeCompare(b.firstName),
+                          )
+                          ?.map((kind) => (
+                            <DraggableCard
+                              key={kind.id}
+                              cardProps={{
+                                title: `${kind.firstName} ${kind.lastName}`,
+                              }}
+                              draggableId={kind.id}
+                              draggableData={kind}
+                            ></DraggableCard>
+                          ))}
+                      </div>
+                    </DroppableCard>
+                  </>
+                ))}
+            </div>
+            <DragOverlay>
+              {draggedKind ? (
+                <DraggableCard
+                  cardProps={{
+                    title: `${draggedKind.firstName} ${draggedKind.lastName}`,
+                  }}
+                  draggableId={draggedKind.id}
+                  draggableData={draggedKind}
+                ></DraggableCard>
+              ) : null}
+            </DragOverlay>
           </DndContext>
         </div>
       </Card>
